@@ -132,3 +132,23 @@ print(now2);
 ```
 위 코드에서 DateTime은 런타임 환경에서 코드가 실행되면서 값을 알수 있기에 
 const를 사용하면 에러가 나타남.
+
+## operator
+- null 인지 연산자 (??=)
+
+```dart
+int number = 3;
+number ??= 5;
+```
+
+number가 null일 경우 5를 할당 아닐경우 기존값 유지
+
+- is
+
+```dart
+int number = 4;
+print(number is int); // true
+print(number !is int); // false
+```
+
+변수가 주어진 타입과 동일한지
