@@ -160,3 +160,60 @@ print(number !is int); // false
 ```
 
 변수가 주어진 타입과 동일한지
+
+## 함수 
+- 함수 선언
+
+```dart
+int addNumber(int num1,int num2) {
+	return num1 + num2
+};
+```
+
+- 화살표 함수 선언
+
+```dart
+int addNumber(int num1, int num2) => num1 + num2;
+```
+
+- optional parameter
+
+```dart
+void main() {
+	addNumber(10);
+}
+
+// 기본값 지정
+addNumber(int x, [int y = 20]) {
+	print(x); // 10
+  print(y); // 20
+}
+
+// 기본값 지정 X
+addNumber(int x, [int? y]) {
+	print(x); // 10
+  print(y); // null
+}
+```
+
+[]로 감쌀경우 필수값이 아니게됨.
+
+대신 int로 선언하였기에 기본값을 넣어줌. (넣지않을경우 null)
+
+- named parameter
+
+```dart
+void main() {
+  addNumber(x:10);
+}
+
+addNumber({
+  required int x,
+  int y = 30
+}) {
+  print(x); // 10
+  print(y); // 30
+}
+```
+
+required는 필수값, required를 제거할경우 optional로 지정됨.
