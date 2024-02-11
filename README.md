@@ -435,3 +435,93 @@ class Lecture<T> {
 ```
 
 - generic은 여러 타입을 넣을수 있음 (<T, U, Type>)
+
+## 비동기 프로그래밍
+
+기본적으로 코드는 동기적으로 실행이 되는데 서버요청과 같이 응답이 오래 걸리는 경우에도 동기적으로 실행이 되면 비효율이기에 오래 걸리는 작업은 비동기로 처리함으로써 병목현상을 막을수있다.
+
+- 동기: 코드가 순차적으로 실행됨.
+- 비동기: 코드 실행 순서가 보장되지않음.
+
+아래와 같은 코드가 있다.
+
+```dart
+void main() {
+  addNumbers(1,1);
+  
+}
+
+void addNumbers(int number1, int number2) {
+  print('계산중: ${number1} + ${number2}');
+  
+  print('계산완료: ${number1} + ${number2} = ${number1 + number2}');
+  
+  print("함수 완료");
+}
+```
+
+코드의 출력을 예측해보자면
+
+1.  계산중: 1 + 1
+2.  계산완료: 1 + 1 = 2
+3.  함수 완료
+
+이런 순서로 출력되는것을 볼수 있다.
+
+하지만 2번과 3번의 순서를 바꾸고 싶은 경우가 생길 수 있다. 
+
+그럴때 비동기 프로그래밍을 이용하면 된다.
+
+### Future
+
+미래에 받아올 값에대한 선언을 할때 사용한다. (즉 비동기로 실행이된다.)
+
+코드를 다음과 같이 바꿔보도록 하겠다.
+
+```dart
+void main() {
+  addNumbers(1, 1);
+}
+
+void addNumbers(int number1, int number2) {
+  print('계산중: ${number1} + ${number2}');
+
+  Future.delayed(Duration(seconds: 2), () {
+    print('계산완료: ${number1} + ${number2} = ${number1 + number2}');
+  });
+
+  print("함수 완료");
+}
+```
+
+delayed의 1번째 인자는 지연할 기간을 설정, 2번째 인자는 지연 기간 이후 실행할 함수를 선언한다.
+
+Future는 비동기로 실행이되기에 위에서 설정한 2초라는 시간을 기다리지않고 다음 코드를 실행함으로써 “함수 완료“가 먼저 출력되는것을 볼 수 있다.
+
+### async await
+
+Future는 기본적으로 비동기로 실행되기에 코드에 순서를 보장하지않는다.
+
+Future 이후에 코드를 실행시키기 위해서는 async await 키워드를 사용하면 된다.
+
+```dart
+void main() async {
+  final int result = await addNumbers(1, 1);
+
+  print("결과 : ${result}");
+}
+
+Future<int> addNumbers(int number1, int number2) {
+  return Future.delayed(Duration(seconds: 2), () {
+    return number1 + number2;
+  });
+}
+```
+
+result는 addNumbers 함수에 반환값을 할당받게 되는데
+
+addNumbers는 Future.delayed로 2초이후에 결과값을 계산하여 return 하게된다.
+
+이 실행순서를 비동기가아닌 동기적으로 실행시키기 위해 함수 호출 앞부분에 await 키워드를 사용하였고
+
+2초뒤에 print 코드가 호출되게된다.
